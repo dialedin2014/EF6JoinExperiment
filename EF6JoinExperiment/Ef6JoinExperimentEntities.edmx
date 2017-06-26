@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Ef6JoinExperimentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssociationMembership">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssociationId" Type="int" Nullable="false" />
+          <Property Name="TutorId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Classroom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClassroomSeat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassroomId" Type="int" Nullable="false" />
+          <Property Name="SeatId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SeatLabel" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TutorId" Type="int" />
+          <Property Name="SeatId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tutor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TutorAssociation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AssociationMembership_Tutor">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="1" />
+          <End Role="AssociationMembership" Type="Self.AssociationMembership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssociationMembership">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssociationMembership_TutorAssociation">
+          <End Role="TutorAssociation" Type="Self.TutorAssociation" Multiplicity="1" />
+          <End Role="AssociationMembership" Type="Self.AssociationMembership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TutorAssociation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssociationMembership">
+              <PropertyRef Name="AssociationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassroomSeat_Classroom">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="1" />
+          <End Role="ClassroomSeat" Type="Self.ClassroomSeat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassroomSeat">
+              <PropertyRef Name="ClassroomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassroomSeat_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="ClassroomSeat" Type="Self.ClassroomSeat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassroomSeat">
+              <PropertyRef Name="SeatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SeatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Tutor">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Ef6JoinExperimentModelStoreContainer">
+          <EntitySet Name="AssociationMembership" EntityType="Self.AssociationMembership" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Classroom" EntityType="Self.Classroom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassroomSeat" EntityType="Self.ClassroomSeat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seat" EntityType="Self.Seat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tutor" EntityType="Self.Tutor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TutorAssociation" EntityType="Self.TutorAssociation" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AssociationMembership_Tutor" Association="Self.FK_AssociationMembership_Tutor">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="AssociationMembership" EntitySet="AssociationMembership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssociationMembership_TutorAssociation" Association="Self.FK_AssociationMembership_TutorAssociation">
+            <End Role="TutorAssociation" EntitySet="TutorAssociation" />
+            <End Role="AssociationMembership" EntitySet="AssociationMembership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassroomSeat_Classroom" Association="Self.FK_ClassroomSeat_Classroom">
+            <End Role="Classroom" EntitySet="Classroom" />
+            <End Role="ClassroomSeat" EntitySet="ClassroomSeat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassroomSeat_Seat" Association="Self.FK_ClassroomSeat_Seat">
+            <End Role="Seat" EntitySet="Seat" />
+            <End Role="ClassroomSeat" EntitySet="ClassroomSeat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Seat" Association="Self.FK_Student_Seat">
+            <End Role="Seat" EntitySet="Seat" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Tutor" Association="Self.FK_Student_Tutor">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Ef6JoinExperimentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Classroom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ClassroomSeats" Relationship="Self.FK_ClassroomSeat_Classroom" FromRole="Classroom" ToRole="ClassroomSeat" />
+        </EntityType>
+        <EntityType Name="ClassroomSeat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassroomId" Type="Int32" Nullable="false" />
+          <Property Name="SeatId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Classroom" Relationship="Self.FK_ClassroomSeat_Classroom" FromRole="ClassroomSeat" ToRole="Classroom" />
+          <NavigationProperty Name="Seat" Relationship="Self.FK_ClassroomSeat_Seat" FromRole="ClassroomSeat" ToRole="Seat" />
+        </EntityType>
+        <EntityType Name="Seat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeatLabel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ClassroomSeats" Relationship="Self.FK_ClassroomSeat_Seat" FromRole="Seat" ToRole="ClassroomSeat" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Seat" FromRole="Seat" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TutorId" Type="Int32" />
+          <Property Name="SeatId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Seat" Relationship="Self.FK_Student_Seat" FromRole="Student" ToRole="Seat" />
+          <NavigationProperty Name="Tutor" Relationship="Self.FK_Student_Tutor" FromRole="Student" ToRole="Tutor" />
+        </EntityType>
+        <EntityType Name="Tutor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Tutor" FromRole="Tutor" ToRole="Student" />
+          <NavigationProperty Name="AssociationMemberships" Relationship="Ef6JoinExperimentModel.FK_AssociationMembership_Tutor" FromRole="Tutor" ToRole="AssociationMembership" />
+        </EntityType>
+        <Association Name="FK_ClassroomSeat_Classroom">
+          <End Role="Classroom" Type="Self.Classroom" Multiplicity="1" />
+          <End Role="ClassroomSeat" Type="Self.ClassroomSeat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Classroom">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassroomSeat">
+              <PropertyRef Name="ClassroomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClassroomSeat_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="ClassroomSeat" Type="Self.ClassroomSeat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClassroomSeat">
+              <PropertyRef Name="SeatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Seat">
+          <End Role="Seat" Type="Self.Seat" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="SeatId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Tutor">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Ef6JoinExperimentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Classrooms" EntityType="Self.Classroom" />
+          <EntitySet Name="ClassroomSeats" EntityType="Self.ClassroomSeat" />
+          <EntitySet Name="Seats" EntityType="Self.Seat" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="Tutors" EntityType="Self.Tutor" />
+          <AssociationSet Name="FK_ClassroomSeat_Classroom" Association="Self.FK_ClassroomSeat_Classroom">
+            <End Role="Classroom" EntitySet="Classrooms" />
+            <End Role="ClassroomSeat" EntitySet="ClassroomSeats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClassroomSeat_Seat" Association="Self.FK_ClassroomSeat_Seat">
+            <End Role="Seat" EntitySet="Seats" />
+            <End Role="ClassroomSeat" EntitySet="ClassroomSeats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Seat" Association="Self.FK_Student_Seat">
+            <End Role="Seat" EntitySet="Seats" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Tutor" Association="Self.FK_Student_Tutor">
+            <End Role="Tutor" EntitySet="Tutors" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <EntitySet Name="AssociationMemberships" EntityType="Ef6JoinExperimentModel.AssociationMembership" />
+          <EntitySet Name="TutorAssociations" EntityType="Ef6JoinExperimentModel.TutorAssociation" />
+          <AssociationSet Name="FK_AssociationMembership_Tutor" Association="Ef6JoinExperimentModel.FK_AssociationMembership_Tutor">
+            <End Role="Tutor" EntitySet="Tutors" />
+            <End Role="AssociationMembership" EntitySet="AssociationMemberships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssociationMembership_TutorAssociation" Association="Ef6JoinExperimentModel.FK_AssociationMembership_TutorAssociation">
+            <End Role="TutorAssociation" EntitySet="TutorAssociations" />
+            <End Role="AssociationMembership" EntitySet="AssociationMemberships" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="AssociationMembership">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssociationId" Type="Int32" Nullable="false" />
+          <Property Name="TutorId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tutor" Relationship="Ef6JoinExperimentModel.FK_AssociationMembership_Tutor" FromRole="AssociationMembership" ToRole="Tutor" />
+          <NavigationProperty Name="TutorAssociation" Relationship="Ef6JoinExperimentModel.FK_AssociationMembership_TutorAssociation" FromRole="AssociationMembership" ToRole="TutorAssociation" />
+        </EntityType>
+        <EntityType Name="TutorAssociation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AssociationMemberships" Relationship="Ef6JoinExperimentModel.FK_AssociationMembership_TutorAssociation" FromRole="TutorAssociation" ToRole="AssociationMembership" />
+        </EntityType>
+        <Association Name="FK_AssociationMembership_Tutor">
+          <End Type="Ef6JoinExperimentModel.Tutor" Role="Tutor" Multiplicity="1" />
+          <End Type="Ef6JoinExperimentModel.AssociationMembership" Role="AssociationMembership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssociationMembership">
+              <PropertyRef Name="TutorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssociationMembership_TutorAssociation">
+          <End Type="Ef6JoinExperimentModel.TutorAssociation" Role="TutorAssociation" Multiplicity="1" />
+          <End Type="Ef6JoinExperimentModel.AssociationMembership" Role="AssociationMembership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TutorAssociation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssociationMembership">
+              <PropertyRef Name="AssociationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Ef6JoinExperimentModelStoreContainer" CdmEntityContainer="Ef6JoinExperimentEntities">
+          <EntitySetMapping Name="Classrooms">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.Classroom">
+              <MappingFragment StoreEntitySet="Classroom">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassroomSeats">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.ClassroomSeat">
+              <MappingFragment StoreEntitySet="ClassroomSeat">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClassroomId" ColumnName="ClassroomId" />
+                <ScalarProperty Name="SeatId" ColumnName="SeatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seats">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.Seat">
+              <MappingFragment StoreEntitySet="Seat">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SeatLabel" ColumnName="SeatLabel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="TutorId" ColumnName="TutorId" />
+                <ScalarProperty Name="SeatId" ColumnName="SeatId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tutors">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.Tutor">
+              <MappingFragment StoreEntitySet="Tutor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssociationMemberships">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.AssociationMembership">
+              <MappingFragment StoreEntitySet="AssociationMembership">
+                <ScalarProperty Name="TutorId" ColumnName="TutorId" />
+                <ScalarProperty Name="AssociationId" ColumnName="AssociationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TutorAssociations">
+            <EntityTypeMapping TypeName="Ef6JoinExperimentModel.TutorAssociation">
+              <MappingFragment StoreEntitySet="TutorAssociation">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
