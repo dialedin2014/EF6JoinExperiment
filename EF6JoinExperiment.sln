@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF6JoinExperiment", "EF6JoinExperiment\EF6JoinExperiment.csproj", "{8F7F43A4-FEA1-4825-858B-5DBD7730726F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF6JoinExperimentTests", "EF6JoinExperimentTests\EF6JoinExperimentTests.csproj", "{C9A17A07-C9C2-42F7-BB9E-159A7DFCB795}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Supporting Files", "Supporting Files", "{AF03CEBC-DB26-4CFF-A061-6443DE83F0CB}"
+	ProjectSection(SolutionItems) = preProject
+		Ef6JoinExperimentDb.bacpac = Ef6JoinExperimentDb.bacpac
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

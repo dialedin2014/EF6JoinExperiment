@@ -29,7 +29,7 @@ namespace EF6JoinExperiment.Tests
         public void GetStudentsWithNationallyCertifiedTutorTest()
         {
             var result = School.GetStudentsWithNationallyCertifiedTutor();
-            Assert.AreEqual("Jane", result);
+            Assert.AreEqual("Jane", result[0]);
         }
 
         [TestMethod()]
